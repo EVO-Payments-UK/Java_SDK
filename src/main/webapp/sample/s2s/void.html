@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Void</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+	<style>
+		body {
+			width: 300px;
+			margin: 10px auto 10px auto;
+		}
+	</style>
+</head>
+<body>
+
+	note: this form is meant to function as a simple example, normally only some of these parameters are user inputs<br/><br/>
+
+	<form method="get" action="../../void">
+		
+	    <div class="form-group">
+	        <label for="country">country:</label><input name="country" value="FR" class="form-control" />
+	    </div>
+	    <div class="form-group">
+	        <label for="currency">currency:</label><input name="currency" value="EUR" class="form-control" />
+	    </div>
+	    <div class="form-group">
+	        <label for="originalMerchantTxId">originalMerchantTxId:</label><input name="originalMerchantTxId" value="" class="form-control" />
+	    </div>
+	
+	    <button type="submit" class="btn btn-default">Send</button>
+	
+	</form>
+</body>
+</html>

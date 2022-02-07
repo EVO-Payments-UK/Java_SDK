@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Tokenize</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+	<style>
+		body {
+			width: 300px;
+			margin: 10px auto 10px auto;
+		}
+	</style>
+</head>
+<body>
+
+	note: this form is meant to function as a simple example, normally only some of these parameters are user inputs<br/><br/>
+
+	<form method="get" action="../../tokenize">
+		    
+	    <div class="form-group">
+	        <label for="number">number:</label><input name="number" value="5413330300002004" class="form-control" />
+	    </div>
+	    <div class="form-group">
+	        <label for="nameOnCard">nameOnCard:</label><input name="nameOnCard" value="John Doe" class="form-control" />
+	    </div>
+	    <div class="form-group">
+	        <label for="expiryMonth">expiryMonth:</label><input name="expiryMonth" value="12" class="form-control" />
+	    </div>
+	    <div class="form-group">
+	        <label for="expiryYear">expiryYear:</label><input name="expiryYear" value="2022" class="form-control" />
+	    </div>
+	
+	    <button type="submit" class="btn btn-default">Send</button>
+	
+	</form>
+</body>
+</html>

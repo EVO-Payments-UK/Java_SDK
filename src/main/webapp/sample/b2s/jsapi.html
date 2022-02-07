@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<title>Simple Javascript integration example</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+<style>
+#ipgCashierDiv {
+	width: 600px;
+	height: 400px;
+	border: 1px solid gray;
+	margin: 10px;
+}
+
+body {
+	width: 620px;
+	margin: 10px auto 10px auto;
+}
+</style>
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+<script src="https://cashier-turnkeyuat.test.myriadpayments.com/js/api.js"></script>
+
+</head>
+<body>
+
+	<div>
+
+		<form id="form">
+		
+			<div class="form-group">
+				<label for="country">customerId:</label><input name="customerId" value="" class="form-control" />
+			</div>
+
+			<div class="form-group">
+				<label for="country">country:</label><input name="country" value="PL" class="form-control" />
+			</div>
+
+			<div class="form-group">
+				<label for="currency">currency:</label><input name="currency" value="PLN" class="form-control" />
+			</div>
+
+			<div class="form-group">
+				<label for="amount">amount:</label><input name="amount" value="20.0" class="form-control" />
+			</div>
+
+			<div class="form-group">
+				<label for="channel">channel:</label><input name="channel" value="ECOM" class="form-control" />
+			</div>
+
+			<div class="form-group">
+				<label for="paymentSolutionId">paymentSolutionId:</label><input name="paymentSolutionId" value="500" class="form-control" />
+			</div>
+
+		</form>
+
+		<button onclick="pay()">Pay</button>
+
+	</div>
+
+	<div id="ipgCashierDiv"></div>
+
+	<script>
+
+		var cashier = com.myriadpayments.api.cashier();
+		cashier.init({
+			baseUrl : "https://cashier-turnkeyuat.test.myriadpayments.com/ui/cashier"
+		});
+
+		function handleResult(result, data) {
+			alert(JSON.stringify(result));
+			console.log(JSON.stringify(data));
+		}
+
+		function pay() {
+			
+			// get token
+			// note: jQuery is not required for Turnkey JS (only used for the token request etc.)!
+
+			var merchantId = "";
+			var token = "";
+
+			$.post("../../tokenforpurchase", {
+				paymentSolutionId : $("[name='paymentSolutionId']", $("#form")).val(),
+				channel : $("[name='channel']", $("#form")).val(),
+				amount : $("[name='amount']", $("#form")).val(),
+				currency : $("[name='currency']", $("#form")).val(),
+				country : $("[name='country']", $("#form")).val(),
+				customerId : $("[name='customerId']", $("#form")).val()
+			}).done(function(data) {
+
+				var p = JSON.parse(data);
+				token = p.token;
+				merchantId = p.merchantId;
+				
+				console.log("merchantId: " + merchantId);
+				console.log("token: " + token);
+				
+				cashier.show({
+					containerId : "ipgCashierDiv",
+					merchantId : merchantId,
+					token : token,
+					successCallback : handleResult,
+					failureCallback : handleResult,
+					cancelCallback : handleResult
+				});
+				
+			}).fail(function() {
+				
+				console.log("token error");
+				
+			});
+	
+		};
+	</script>
+
+</body>
+</html>

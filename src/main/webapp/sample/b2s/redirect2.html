@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="UTF-8">
+	<title>Redirection example</title>
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+	<style>
+		body {
+			width: 300px;
+			margin: 10px auto 10px auto;
+		}
+	</style>
+	
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+	
+	<script type="text/javascript">
+		window.onerror = function myErrorHandler(errorMsg, url, lineNumber) {
+			alert("Error occured: " + errorMsg + "\nurl: " + url + "\nline: " + lineNumber);
+			return false;
+		}
+	</script>
+
+</head>
+<body>
+
+	<form id="form" method="get" action="https://cashier-turnkeyuat.test.myriadpayments.com/ui/cashier">
+
+		<div class="form-group">
+			<label for="country">country:</label><input name="country" value="FR" class="form-control" />
+		</div>
+
+		<div class="form-group">
+			<label for="currency">currency:</label><input name="currency" value="EUR" class="form-control" />
+		</div>
+
+		<div class="form-group">
+			<label for="amount">amount:</label><input name="amount" value="20.0" class="form-control" />
+		</div>
+
+		<div class="form-group">
+			<label for="channel">channel:</label><input name="channel" value="ECOM" class="form-control" />
+		</div>
+
+		<div class="form-group">
+			<label for="paymentSolutionId">paymentSolutionId:</label><input name="paymentSolutionId" value="500" class="form-control" />
+		</div>
+		
+		<input type="hidden" name="token" value="" class="form-control" />
+		<input type="hidden" name="merchantId" value="" class="form-control" />
+		
+		<input type="hidden" name="integrationMode" value="standalone" class="form-control" />
+		
+	</form>
+	
+	<button onclick="pay()">Pay</button>
+
+	<script type="text/javascript">
+	
+		function pay() {
+	
+			// get token
+			// note: jQuery is only used for the token request etc.
+		
+			$.post("../../tokenforpurchase", {
+				paymentSolutionId : $("[name='paymentSolutionId']", $("#form")).val(),
+				channel : $("[name='channel']", $("#form")).val(),
+				amount : $("[name='amount']", $("#form")).val(),
+				currency : $("[name='currency']", $("#form")).val(),
+				country : $("[name='country']", $("#form")).val(),
+				customerId : $("[name='customerId']", $("#form")).val()
+			}).done(function(data) {
+	
+				var p = JSON.parse(data);
+				var token = p.token;
+				var merchantId = p.merchantId;
+				
+				console.log("merchantId: " + merchantId);
+				console.log("token: " + token);
+				
+				form.elements["merchantId"].value = merchantId;
+				form.elements["token"].value = token;
+					
+				$("#form").submit();
+				
+			}).fail(function() {
+				
+				console.log("token error");
+				
+			});
+		
+		}
+		
+	</script>
+</body>
+</html>
